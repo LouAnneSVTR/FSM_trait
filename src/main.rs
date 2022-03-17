@@ -3,23 +3,24 @@ use std::os::raw::c_char;
 pub type NodeIndex = usize;
 pub type TransitionIndex = usize;
 
-trait FSM {
-    fn new(nameFSM: &str) -> FiniteStateMachine;
+pub trait FSM {
+    fn new(nameFSM: &str) -> SimpleFiniteStateMachine;
     fn addNode(&mut self, name: i32) -> NodeIndex;
     fn removeNode(&mut self, name: i32) -> NodeIndex;
     fn addTransition(&mut self, letter: char, inputNodes: NodeIndex, outputNodes: NodeIndex) -> TransitionIndex;
     fn removeTransition(&mut self, letter: char, inputNodes: NodeIndex, outputNodes: NodeIndex) -> TransitionIndex;
     fn existTransition(&mut self, transitionTest: TransitionIndex, c_char: char) -> bool;
     fn displayTransition(&self);
+    fn displayFSM(&self);
     fn process_fsm(&mut self, nodeIndex: NodeIndex, word: &str) -> Vec<(usize, usize)>;
-    fn print_vec(mut vec : Vec<Vec<&str>>);
+    fn print_vec( vec : Vec<Vec<&str>>);
 }
 
 struct NamedElement{
     name: String
 }
 
-struct SimpleFiniteStateMachine {
+pub struct SimpleFiniteStateMachine {
     nameFSM: String,
     transitions: Vec<Transition>,
     nodes: Vec<Node>
@@ -37,9 +38,9 @@ struct Transition {
     inputNodes: NodeIndex,
 }
 
-impl FSM for SimpleFiniteStateMachineFiniteStateMachine {
-    fn new(nameFSM: &str) -> FiniteStateMachine {
-        return FiniteStateMachine {
+impl FSM for SimpleFiniteStateMachine {
+    fn new(nameFSM: &str) -> SimpleFiniteStateMachine {
+        return SimpleFiniteStateMachine {
             nameFSM: nameFSM.into(),
             transitions: Vec::new(),
             nodes: Vec::new()
@@ -125,7 +126,7 @@ impl FSM for SimpleFiniteStateMachineFiniteStateMachine {
 
     }
 
-    fn print_vec(mut vec : Vec<Vec<&str>>) {
+    fn print_vec( vec : Vec<Vec<&str>>) {
         let state_nb = vec.len();
 
         for i in 0..state_nb {
@@ -160,7 +161,7 @@ impl FSM for SimpleFiniteStateMachineFiniteStateMachine {
 
 fn main() {
 
-    let mut test = FiniteStateMachine::new("Test");
+    let mut test = SimpleFiniteStateMachine::new("Test");
     let name = 0;
     let name2 = 1;
     let name3 = 2;
